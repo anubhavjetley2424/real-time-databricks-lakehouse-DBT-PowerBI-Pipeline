@@ -1,12 +1,17 @@
-# 1. Databricks SQL Warehouse (Power BI Server)
+# 1. Databricks SQL Warehouse (Now Serverless)
 resource "databricks_sql_endpoint" "power_bi_server" {
-  name             = "Flick_BI_Warehouse"
-  cluster_size     = "2X-Small"
-  max_num_clusters = 1
-  auto_stop_mins   = 30 
+  name                      = "Flick_BI_Warehouse"
+  cluster_size              = "2X-Small"
+  max_num_clusters          = 1
+  auto_stop_mins            = 30
+  enable_serverless_compute = true  # This is the magic line
+
+  timeouts {
+    create = "30m"
+  }
 }
 
-# 2. Interactive Development Cluster
+# 2. Interactive Development Cluster (No changes needed)
 resource "databricks_cluster" "dev_cluster" {
   cluster_name            = "flick-dev-cluster"
   spark_version           = "13.3.x-scala2.12"
