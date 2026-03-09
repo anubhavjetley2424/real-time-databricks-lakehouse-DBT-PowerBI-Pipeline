@@ -44,7 +44,7 @@ resource "databricks_job" "smart_pest_pipeline" {
   }
 
   # Define the environment at the job level (Singular 'environment' block)
-  environments {
+  environment {
     environment_key = "dbt_env"
     spec {
       client = "1" # <-- Changed from "dbt" to "1"
