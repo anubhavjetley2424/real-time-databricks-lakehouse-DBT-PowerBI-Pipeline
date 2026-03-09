@@ -3,7 +3,7 @@ name: "Flick Infrastructure Deployment"
 on:
   push:
     branches:
-      - main  # Runs every time you push to the main branch
+      - main
 
 permissions:
   contents: read
@@ -12,8 +12,13 @@ jobs:
   terraform:
     name: "Terraform Apply"
     runs-on: ubuntu-latest
+    
+    # ADD THIS SECTION BELOW:
+    defaults:
+      run:
+        working-directory: ./terraform
+    
     env:
-      # These map your one-time GitHub Secrets to Terraform variables
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
