@@ -1,0 +1,4 @@
+sensor_id,site_name,region,install_date
+SNSR-001,Sydney-Warehouse-A,NSW,2024-01-15
+SNSR-002,Melbourne-Office-B,VIC,2024-02-20
+SNSR-003,Brisbane-Site-C,QLD,2024-03-05

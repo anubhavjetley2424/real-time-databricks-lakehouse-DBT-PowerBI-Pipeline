@@ -1,0 +1,17 @@
+name: 'flick_pest_control'
+version: '1.0.0'
+config-version: 2
+
+profile: 'flick_profile' # This must match the name in profiles.yml
+
+model-paths: ["models"]
+
+seed-paths: ["seeds"]
+
+
+models:
+  flick_pest_control:
+    staging:
+      +materialized: incremental
+    marts:
+      +materialized: table

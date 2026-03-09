@@ -1,0 +1,10 @@
+version: 2
+models:
+  - name: stg_pest_telemetry
+    columns:
+      - name: sensor_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('sensor_locations')
+              field: sensor_id

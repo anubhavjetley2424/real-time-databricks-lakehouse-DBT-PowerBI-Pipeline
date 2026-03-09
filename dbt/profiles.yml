@@ -1,0 +1,10 @@
+flick_profile:
+  target: dev
+  outputs:
+    dev:
+      type: databricks
+      schema: analytics_gold
+      host: "{{ env_var('DBT_HOST') }}"
+      http_path: "{{ env_var('DBT_HTTP_PATH') }}"
+      token: "{{ env_var('DBT_TOKEN') }}"
+      threads: 4
