@@ -1,13 +1,12 @@
 # 1. Resource Group
 resource "azurerm_resource_group" "flick_rg" {
-  name     = "rg-flick-smart-v2"  # Changed from prod to v2
+  name     = "rg-flick-smart-v2"
   location = "Australia East"
 }
 
-
-# 2. Storage Account (ADLS Gen2 Lakehouse)
+# 2. Storage Account (ADLS Gen2)
 resource "azurerm_storage_account" "lakehouse" {
-  name                     = "stflicklakehouseprod"
+  name                     = "stflicklakehousev2" # Unique name
   resource_group_name      = azurerm_resource_group.flick_rg.name
   location                 = azurerm_resource_group.flick_rg.location
   account_tier             = "Standard"
@@ -15,9 +14,9 @@ resource "azurerm_storage_account" "lakehouse" {
   is_hns_enabled           = true 
 }
 
-# 3. Event Hub (Real-time Entry)
+# 3. Event Hub Namespace
 resource "azurerm_eventhub_namespace" "smart_ns" {
-  name                = "evhns-flick-smart-prod"
+  name                = "evhns-flick-smart-v2" # Unique name
   location            = azurerm_resource_group.flick_rg.location
   resource_group_name = azurerm_resource_group.flick_rg.name
   sku                 = "Standard"

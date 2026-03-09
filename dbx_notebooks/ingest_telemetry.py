@@ -11,9 +11,15 @@ schema = StructType() \
     .add("pest_count", IntegerType()) \
     .add("battery_level", DoubleType())
 
-# 2. Configure Event Hubs Connection
-# In a real scenario, use dbutils.secrets.get() for the connection string
-connectionString = "YOUR_EVENT_HUB_CONNECTION_STRING"
+# 2. Configure Event Hubs Connection DYNAMICALLY
+# This pulls the value Terraform injected into the Spark session
+connectionString = spark.conf.get("spark.eventhub.connectionString")
+
+# Clean the connection string (append EntityPath if missing)
+# Spark Event Hubs connector usually needs the specific hub name at the end
+if "EntityPath" not in connectionString:
+    connectionString = f"{connectionString};EntityPath=pest-telemetry"
+
 conf = {
   'eventhubs.connectionString' : sc._jvm.org.apache.spark.eventhubs.EventHubsUtils.encrypt(connectionString)
 }

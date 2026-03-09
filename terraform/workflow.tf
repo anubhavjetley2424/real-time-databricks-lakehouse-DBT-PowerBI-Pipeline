@@ -7,6 +7,15 @@ resource "databricks_job" "smart_pest_pipeline" {
     provider = "gitHub"
   }
 
+  # Mandatory environment definition for Serverless dbt tasks
+  environments {
+    environment_key = "dbt_env"
+    spec {
+      client = "dbt"
+    }
+  }
+
+  # Task 1: Ingestion (Spark Streaming)
   # Task 1: Ingestion
   task {
     task_key = "ingestion_streaming"
@@ -15,17 +24,25 @@ resource "databricks_job" "smart_pest_pipeline" {
       num_workers   = 1
       spark_version = "13.3.x-scala2.12"
       node_type_id  = "Standard_DS3_v2"
+
+      # THIS IS THE DYNAMIC PART
+      spark_conf = {
+        "spark.eventhub.connectionString" = azurerm_eventhub_namespace.smart_ns.default_primary_connection_string
+      }
     }
 
     notebook_task {
-      notebook_path = "notebooks/ingest_telemetry" # Path relative to git root
+      notebook_path = "notebooks/ingest_telemetry"
     }
   }
 
-  # Task 2: dbt Transformation
+  # Task 2: dbt Transformation (Using Serverless SQL Warehouse)
   task {
     task_key = "dbt_transformations"
     depends_on { task_key = "ingestion_streaming" }
+    
+    # Link to the environment defined above
+    environment_key = "dbt_env"
 
     dbt_task {
       project_directory = "dbt_project"
