@@ -1,8 +1,9 @@
 # 1. Resource Group
 resource "azurerm_resource_group" "flick_rg" {
-  name     = "rg-flick-smart-prod"
+  name     = "rg-flick-smart-v2"  # Changed from prod to v2
   location = "Australia East"
 }
+
 
 # 2. Storage Account (ADLS Gen2 Lakehouse)
 resource "azurerm_storage_account" "lakehouse" {
