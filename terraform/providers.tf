@@ -4,13 +4,13 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~> 3.0"
     }
-    # ADD THIS PART:
     azuread = {
       source  = "hashicorp/azuread"
       version = "~> 2.0"
     }
     databricks = {
-      source = "databricks/databricks"
+      source  = "databricks/databricks"
+      version = ">= 1.50.0" # This version is required for 'environments' blocks
     }
   }
 }
@@ -19,9 +19,9 @@ provider "azurerm" {
   features {}
 }
 
-# AND ADD THIS EMPTY BLOCK:
 provider "azuread" {}
 
+# The Databricks provider uses the URL from the workspace created in main.tf
 provider "databricks" {
   host = azurerm_databricks_workspace.flick_dw.workspace_url
 }

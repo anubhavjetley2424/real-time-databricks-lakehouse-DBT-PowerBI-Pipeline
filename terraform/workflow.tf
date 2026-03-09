@@ -8,6 +8,13 @@ resource "databricks_job" "smart_pest_pipeline" {
     provider = "gitHub"
   }
 
+  environments {
+    environment_key = "dbt_env"
+    spec {
+      client = "dbt"
+    }
+  }
+
   # -----------------------------------------------------------------------
   # TASK 1: Ingestion (Spark Streaming)
   # -----------------------------------------------------------------------
@@ -37,9 +44,9 @@ resource "databricks_job" "smart_pest_pipeline" {
     task_key = "dbt_transformations"
     depends_on { task_key = "ingestion_streaming" }
 
-    # Removed the 'environment_key' and plural 'environments' block 
-    # as they are likely unsupported by your current provider version.
-    
+    # Link to the environment defined at the top of the resource
+    environment_key = "dbt_env" 
+
     dbt_task {
       project_directory = "dbt_project"
       commands          = ["dbt build"]
